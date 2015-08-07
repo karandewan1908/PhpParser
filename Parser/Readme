@@ -1,0 +1,46 @@
+************************Readme*******************************************************
+The php parser has a main class Parser which is inside Parser.php. This class converts one of the input file format [csv|xml|json] to [csv|xml|json].
+There are several other classes with some of them with there factories. Names of the class are carefully choosen so that it could be easily understood.
+Algorithm applied is 
+	i) First convert input file to array of type key => value.
+	ii) Then convert this array to any other form.
+This way give us isolations and till the array is correctly formed parsing will be correct..
+Cases like csv having x_y and x both heading will result in the array with key _self which is define i.e. constant in ArrayBuilder class which is the entry for converting file to array.
+All the parser takes care that this special key is taken into consideration.
+There are three parser function and two parsing class ArrayToCSV and ArrayToXML. Json decode and json encode is enough for json.
+Classes like ArrayBuilder, SupportedFileType, SupportedParsingType are made static so that they could be called without object instantation. 
+This make sense becuase these classes are nothing but a helper to get correct data.
+There is also a class utilitites which can contain all the utilities like mkdirs is there which will create recurssively directories for the output file.
+
+Running a script: 
+	php Parser.php inputfile  {ConvertTO:[xml|json|csv]} {InputFileFormat:[csv|js|xml]} {OutputFile:outfile};
+everything in {} are not necessary and there ordering could be anything except inputfile should be first parameter. Also rest of the inputs are of the form key=>value
+this is done so that we can move to config file and also so that user know what they are typing.
+Also, make sure there is no gap between key and value as this will become aniother parameter and won't get parsed..No curly braces need while giving input.
+InpuFileFormat is needed when the input file extension is different than the [csv|xml|js].
+ 
+Example : php Parser.php input.csv ConvertTo:xml InputFileFormat:csv OutPutFile:output.xml 
+
+classes functionality:
+
+Parser: Main class that will convert and parse the input to the relevant output.
+ArrayBuilder: Static class convert input file to array.
+CSVToArray: Convert Csv file to array of type key => value
+XMLToArray : Convert XML file to array of type key => value
+ArrayToCSV : Convert Array to array of rows for csv..
+ArrayToXML : Convert array to SimpleElement php xml object..
+Factories: i) FileToArrayFactory return relevant file to array object..
+			ii) ArrayToFile return array to file object..
+Utilities: Class where all the utilities can go..
+
+Few changes could be 
+	i) Try and catch
+	ii) Input data validity
+	
+Assumption:
+That the data presented in any form respect the csv input header format specified in the requirement sheet...
+
+For interactive mode use 
+	php parser.php
+
+**********************__Thanks__******************************************************
